@@ -61,8 +61,8 @@ if( VIAME_DOWNLOAD_MODELS )
 
     if( VIAME_DOWNLOAD_MODELS-SEA-LION )
       DownloadAndInstallAddOn(
-        https://data.kitware.com/api/v1/item/5f6639dd50a41e3d199a4153/download
-        bd54af8887fb2d4263eee4131acddba1
+        https://data.kitware.com/api/v1/item/5f750f1c50a41e3d19bc97bb/download
+        3ed807df7513521afd1cc6a5efb951e6
         ${VIAME_DOWNLOAD_DIR}/VIAME-Sea-Lion-Models-v1.1.zip )
     endif()
   else()
@@ -220,6 +220,7 @@ set( CORE_PIPELINE_FILES
   pipelines/tracker_stabilized_iou.pipe
   pipelines/tracker_svm_models.pipe
   pipelines/train_color_freq_aug.pipe
+  pipelines/train_enhance_and_motion_aug.pipe
   pipelines/train_hue_shifting_only_aug.pipe
   pipelines/train_intensity_color_freq_motion_aug.pipe
   pipelines/train_intensity_hue_motion_aug.pipe

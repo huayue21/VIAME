@@ -10,9 +10,6 @@ system components is currently the KWIVER library, which can connect C/C++, pyth
 together in a graph-like pipeline architecture. Alongside the pipelined image processing system are a
 number of standalone tools for accomplishing the above. Both a desktop and web version exists for
 deployments in different types of environments.
-<br>
-<br>
-<img src="https://www.viametoolkit.org/wp-content/uploads/2020/02/viame_summary_no_label.png" alt="Capabilities">
 
 Documentation
 -------------
@@ -72,10 +69,10 @@ CentOS
 A CUDA-enabled GPU with 8 Gb or more VRAM <br>
 
 **Windows Desktop Binaries:** <br>
-[VIAME v0.11.1 Windows 7\*/8/10, 64-Bit, GPU Enabled, Python 3.6, Mirror1](https://data.kitware.com/api/v1/item/5f67d9df50a41e3d199c8074/download) <br>
-[VIAME v0.11.1 Windows 7\*/8/10, 64-Bit, GPU Enabled, Python 3.6, Mirror2](https://drive.google.com/file/d/1vBLb1XH-FnFDlI4ZLKookhSzCch91Hvu/view?usp=sharing) <br>
-[VIAME v0.11.1 Windows 7\*/8/10, 64-Bit, CPU Only, Python 3.6, Mirror1](https://data.kitware.com/api/v1/item/5f67d98050a41e3d199c8029/download) <br>
-[VIAME v0.11.1 Windows 7\*/8/10, 64-Bit, CPU Only, Python 3.6, Mirror2](https://drive.google.com/file/d/1RLaLUxmDaT1KwGhXynPcl87Bk88tUO8Q/view?usp=sharing)
+[VIAME v0.11.2 Windows 7\*/8/10, 64-Bit, GPU Enabled, Python 3.6, Mirror1](https://data.kitware.com/api/v1/item/5f7b32f850a41e3d19ca03b0/download) <br>
+[VIAME v0.11.2 Windows 7\*/8/10, 64-Bit, GPU Enabled, Python 3.6, Mirror2](https://drive.google.com/file/d/1pDW3rwvjlG_a6aa4CAvoymcRa9ov-591/view?usp=sharing) <br>
+[VIAME v0.11.2 Windows 7\*/8/10, 64-Bit, CPU Only, Python 3.6, Mirror1](https://data.kitware.com/api/v1/item/5f7b332650a41e3d19ca0482/download) <br>
+[VIAME v0.11.2 Windows 7\*/8/10, 64-Bit, CPU Only, Python 3.6, Mirror2](https://drive.google.com/file/d/15hB4pUtnS4-Z5doCZDWC09btCa6jsF1p/view?usp=sharing)
 
 **Ubuntu Desktop Binaries:** <br>
 [VIAME v0.11.1 Ubuntu 18.04, 64-Bit, GPU Enabled, Python 3.6, Mirror1](https://data.kitware.com/api/v1/item/5f6836a850a41e3d199d327b/download) <br>
@@ -93,6 +90,7 @@ A CUDA-enabled GPU with 8 Gb or more VRAM <br>
 
 **Web Applications**: <br>
 [VIAME Online Web Annotator and Public Annotations](https://viame.kitware.com/) <br>
+[VIAME Web Local Installation Instructions](https://github.com/VIAME/VIAME-Web/blob/master/docker/README.md) <br>
 [VIAME Web Source Repository](https://github.com/VIAME/VIAME-Web)
 
 **Optional Patches:** <br>
@@ -105,13 +103,13 @@ A CUDA-enabled GPU with 8 Gb or more VRAM <br>
 [MOUSS Model Set 1 (Deep 7 Bottomfish) Add-On, All OS](https://data.kitware.com/api/v1/item/5cdec8ac8d777f072bb4457f/download) <br>
 [MOUSS Model Set 2 (Deep 7 Bottomfish) Add-On, All OS](https://data.kitware.com/api/v1/item/5ce5af728d777f072bd5836d/download) <br>
 [MOUSS Sample Project, All Linux](https://data.kitware.com/api/v1/item/5e8d3ad42660cbefba9dd13c/download) <br>
-[Sea Lion Models Add-On, All OS](https://data.kitware.com/api/v1/item/5f6639dd50a41e3d199a4153/download)
+[Sea Lion Models Add-On, All OS](https://data.kitware.com/api/v1/item/5f750f1c50a41e3d19bc97bb/download)
 
 **Custom Distributions:** <br>
-[Seal Multi-View GUI, Windows 7/8/10, GPU Enabled](https://data.kitware.com/api/v1/item/5f5a332450a41e3d19795877/download) <br>
-[Seal Multi-View GUI, Windows 7/8/10, CPU Only](https://data.kitware.com/api/v1/item/5f594a1450a41e3d197672e4/download) <br>
-[Seal Multi-View GUI, CentOS 7, GPU Enabled](https://data.kitware.com/api/v1/item/5f594dca50a41e3d1976743e/download) <br>
-[Seal Multi-View GUI, Generic Linux, GPU Enabled](https://data.kitware.com/api/v1/item/5f594e5650a41e3d197674e7/download)
+[Seal Multi-View GUI, Windows 7/8/10, GPU Enabled](https://data.kitware.com/api/v1/item/5f774f0950a41e3d19c2d103/download) <br>
+[Seal Multi-View GUI, Windows 7/8/10, CPU Only](https://data.kitware.com/api/v1/item/5f774eac50a41e3d19c2d093/download) <br>
+[Seal Multi-View GUI, CentOS 7, GPU Enabled](https://data.kitware.com/api/v1/item/5f7764cd50a41e3d19c2e35f/download) <br>
+[Seal Multi-View GUI, Generic Linux, GPU Enabled](https://data.kitware.com/api/v1/item/5f77645650a41e3d19c2e26b/download)
 
 Note: To install Add-Ons and Patches, copy them into an existing VIAME installation folder.
 To use project files extract them into your working directory of choice. Custom Applications

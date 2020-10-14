@@ -70,6 +70,7 @@ class NetHarnTrainer( TrainDetector ):
         self._gpu_count = -1
         self._tmp_training_file = "training_truth.json"
         self._tmp_validation_file = "validation_truth.json"
+        self._augmentation = "complex"
         self._gt_frames_only = False
         self._chip_width = "640"
         self._chip_overlap = "0.20"
@@ -82,6 +83,8 @@ class NetHarnTrainer( TrainDetector ):
         self._resize_option = "original_and_resized"
         self._max_scale_wrt_chip = 2.0
         self._no_format = False
+        self._aux_image_labels = ""
+        self._aux_image_extensions = ""
 
     def get_configuration( self ):
         # Inherit from the base class
@@ -96,6 +99,7 @@ class NetHarnTrainer( TrainDetector ):
         cfg.set_value( "pipeline_template", self._pipeline_template )
         cfg.set_value( "gpu_count", str( self._gpu_count ) )
         cfg.set_value( "gt_frames_only", str( self._gt_frames_only ) )
+        cfg.set_value( "augmentation", str( self._augmentation ) )
         cfg.set_value( "chip_width", str( self._chip_width ) )
         cfg.set_value( "chip_overlap", str( self._chip_overlap ) )
         cfg.set_value( "max_epochs", str( self._max_epochs ) )
@@ -105,6 +109,8 @@ class NetHarnTrainer( TrainDetector ):
         cfg.set_value( "pipeline_template", self._pipeline_template )
         cfg.set_value( "max_scale_wrt_chip", str( self._max_scale_wrt_chip ) )
         cfg.set_value( "no_format", str( self._no_format ) )
+        cfg.set_value( "aux_image_labels", str( self._aux_image_labels ) )
+        cfg.set_value( "aux_image_extensions", str( self._aux_image_extensions ) )
 
         return cfg
 
@@ -122,6 +128,7 @@ class NetHarnTrainer( TrainDetector ):
         self._pipeline_template = str( cfg.get_value( "pipeline_template" ) )
         self._gpu_count = int( cfg.get_value( "gpu_count" ) )
         self._gt_frames_only = strtobool( cfg.get_value( "gt_frames_only" ) )
+        self._augmentation = str( cfg.get_value( "augmentation" ) )
         self._chip_width = str( cfg.get_value( "chip_width" ) )
         self._chip_overlap = str( cfg.get_value( "chip_overlap" ) )
         self._max_epochs = str( cfg.get_value( "max_epochs" ) )
@@ -131,6 +138,8 @@ class NetHarnTrainer( TrainDetector ):
         self._pipeline_template = str( cfg.get_value( "pipeline_template" ) )
         self._max_scale_wrt_chip = float( cfg.get_value( "max_scale_wrt_chip" ) )
         self._no_format = strtobool( cfg.get_value( "no_format" ) )
+        self._aux_image_labels = str( cfg.get_value("aux_image_labels") )
+        self._aux_image_extensions = str( cfg.get_value("aux_image_extensions") )
 
         # Check GPU-related variables
         gpu_memory_available = 0
@@ -147,7 +156,12 @@ class NetHarnTrainer( TrainDetector ):
 
         if self._mode == "detector":
             if self._batch_size == "auto":
-                if gpu_memory_available > 9e9:
+                if len( self._aux_image_labels ) > 0:
+                    if gpu_memory_available >= 14e9:
+                        self._batch_size = "2"
+                    else:
+                        self._batch_size = "1"
+                elif gpu_memory_available > 9e9:
                     self._batch_size = "4"
                 elif gpu_memory_available >= 7e9:
                     self._batch_size = "3"
@@ -189,6 +203,16 @@ class NetHarnTrainer( TrainDetector ):
               DetectedObjectSetOutput.create( "coco" )
             self._validation_writer = \
               DetectedObjectSetOutput.create( "coco" )
+
+            writer_conf = self._training_writer.get_configuration()
+            writer_conf.set_value( "aux_image_labels", self._aux_image_labels )
+            writer_conf.set_value( "aux_image_extensions", self._aux_image_extensions )
+            self._training_writer.set_configuration( writer_conf )
+
+            writer_conf = self._validation_writer.get_configuration()
+            writer_conf.set_value( "aux_image_labels", self._aux_image_labels )
+            writer_conf.set_value( "aux_image_extensions", self._aux_image_extensions )
+            self._validation_writer.set_configuration( writer_conf )
 
             self._training_writer.open( self._training_file )
             self._validation_writer.open( self._validation_file )
@@ -270,7 +294,6 @@ class NetHarnTrainer( TrainDetector ):
                      "--arch=resnet50",
                      "--lr=0.5e-3",
                      "--schedule=ReduceLROnPlateau-p3-c3",
-                     "--augmenter=simple",
                      "--input_dims=" + self._chip_width + "," + self._chip_width ]
         else:
             cmd += [ "bioharn.detect_fit",
@@ -278,7 +301,6 @@ class NetHarnTrainer( TrainDetector ):
                      "--arch=cascade",
                      "--lr=1e-3",
                      "--schedule=ReduceLROnPlateau-p2-c2",
-                     "--augmenter=complex",
                      "--input_dims=window",
                      "--window_dims=" + self._chip_width + "," + self._chip_width,
                      "--window_overlap=" + self._chip_overlap,
@@ -296,14 +318,20 @@ class NetHarnTrainer( TrainDetector ):
                  "--normalize_inputs=True",
                  "--init=noop",
                  "--optim=sgd",
+                 "--augmenter=" + self._augmentation,
                  "--max_epoch=" + self._max_epochs,
                  "--batch_size=" + self._batch_size,
                  "--timeout=" + self._timeout,
-                 "--channels=rgb",
                  "--sampler_backend=none" ]
 
         if len( self._seed_model ) > 0:
             cmd.append( "--pretrained=" + self._seed_model )
+
+        channel_str = "rgb"
+        if len( self._aux_image_labels ) > 0:
+            for label in self._aux_image_labels.rstrip().split(','):
+                channel_str = channel_str + "|" + label
+        cmd.append( "--channels=" + channel_str )
 
         if threading.current_thread().__class__.__name__ == '_MainThread':
             signal.signal( signal.SIGINT, lambda signal, frame: self.interupt_handler() )
